@@ -50,31 +50,58 @@ public class JsonDealListener<M> implements IHttpListener {
                     dataListener.onSuccess(m);
                 }
             });
-        } catch (IOException e) {
+        } catch (Exception e) {
+            try {
+                inputStream.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
+            dataListener.onFail();
         }
+    }
+
+    @Override
+    public void onFail() {
+        dataListener.onFail();
     }
 
     private String getContent(InputStream inputStream) {
         String content = null;
         try {
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
             StringBuilder sb = new StringBuilder();
+
             String line = null;
 
             try {
+
                 while ((line = reader.readLine()) != null) {
+
                     sb.append(line + "\n");
+
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+
+            } catch (IOException e) {
+
+                System.out.println("Error=" + e.toString());
                 dataListener.onFail();
             } finally {
-                inputStream.close();
-            }
 
+                try {
+
+                    inputStream.close();
+
+                } catch (IOException e) {
+
+                    System.out.println("Error=" + e.toString());
+
+                }
+
+            }
             return sb.toString();
+
         } catch (Exception e) {
             e.printStackTrace();
             dataListener.onFail();
@@ -82,8 +109,5 @@ public class JsonDealListener<M> implements IHttpListener {
         return content;
     }
 
-    @Override
-    public void onFail() {
 
-    }
 }

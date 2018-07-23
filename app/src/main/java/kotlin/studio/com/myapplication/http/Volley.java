@@ -1,5 +1,7 @@
 package kotlin.studio.com.myapplication.http;
 
+import java.util.concurrent.FutureTask;
+
 import kotlin.studio.com.myapplication.http.interfaces.IDataListener;
 import kotlin.studio.com.myapplication.http.interfaces.IHttpListener;
 import kotlin.studio.com.myapplication.http.interfaces.IHttpService;
@@ -23,13 +25,20 @@ public class Volley {
                                           IDataListener dataListener) {
 
         RequestHodler<T> requestHodler = new RequestHodler<>();
-        requestHodler.setUrl(url);
         IHttpService httpService = new JsonHttpService();
         IHttpListener httpListener = new JsonDealListener<>(response, dataListener);
+        requestHodler.setUrl(url);
         requestHodler.setHttpService(httpService);
         requestHodler.setHttpListener(httpListener);
+        requestHodler.setRequestInfo(requestInfo);
 
         HttpTask<T> httpTask = new HttpTask<>(requestHodler);
 
+        try {
+            ThreadPoolManager.getInstance().excute(new FutureTask<Object>(httpTask,null));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            dataListener.onFail();
+        }
     }
 }

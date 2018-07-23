@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.BaseActivity">
+    tools:context=".activity.HttpActivity">
 
     <Button
         android:id="@+id/text_ioc"
@@ -23,6 +23,7 @@
         android:id="@+id/tvResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="123456"
         android:textColor="#000000"
         android:textSize="16sp"/>
 

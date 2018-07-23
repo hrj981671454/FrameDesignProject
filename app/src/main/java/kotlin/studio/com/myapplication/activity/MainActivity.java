@@ -1,5 +1,6 @@
 package kotlin.studio.com.myapplication.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -43,6 +44,8 @@ public class MainActivity extends BaseActivity {
     Button   textView4;
     @ViewInject(R.id.text_ioc5)
     Button   textView5;
+    @ViewInject(R.id.text_ioc6)
+    Button   textView6;
     @ViewInject(R.id.lvList)
     ListView lvList;
     private DownloadDao mDao;
@@ -120,6 +123,11 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.text_ioc5)
     public void click5(View view) {
 
+    }
+
+    @OnClick(R.id.text_ioc6)
+    public void click6(View view) {
+        startActivity(new Intent(this, HttpActivity.class));
     }
 
 

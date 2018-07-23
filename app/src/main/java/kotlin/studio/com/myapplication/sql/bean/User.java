@@ -13,19 +13,19 @@ import kotlin.studio.com.myapplication.sql.DbTable;
 @DbTable("tb_user")
 public class User {
 
-    @DbField("name")
-    public String name;
+    @DbField("phoneNumber")
+    public String phoneNumber;
 
     @DbField("password")
     public String password;
 
 
     public String getName() {
-        return name;
+        return phoneNumber;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.phoneNumber = name;
     }
 
     public String getPassword() {

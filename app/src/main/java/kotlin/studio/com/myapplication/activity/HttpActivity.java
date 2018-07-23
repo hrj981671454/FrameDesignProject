@@ -5,6 +5,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import kotlin.studio.com.myapplication.R;
+import kotlin.studio.com.myapplication.bean.LoginBean;
+import kotlin.studio.com.myapplication.http.Volley;
+import kotlin.studio.com.myapplication.http.interfaces.IDataListener;
 import kotlin.studio.com.myapplication.inject.ContentView;
 import kotlin.studio.com.myapplication.inject.OnClick;
 import kotlin.studio.com.myapplication.inject.ViewInject;
@@ -31,11 +34,24 @@ public class HttpActivity extends BaseActivity {
 
     @OnClick(R.id.text_ioc)
     public void onclick(View view) {
-
         User user = new User();
-        user.setName("15110272604");
         user.setPassword("123456");
-//        Volley.sendRequest(user, url);
+        user.setName("15110272604");
+        Volley.sendRequest(user, url, LoginBean.class, new IDataListener<LoginBean>() {
+            @Override
+            public void onSuccess(LoginBean loginBean) {
+                if (loginBean.getReturnCode() == 200) {
+                    textView.setText("登录信息：" + loginBean.getInfo());
+                } else {
+                    textView.setText("登录信息：" + loginBean.getInfo());
+                }
+            }
+
+            @Override
+            public void onFail() {
+                textView.setText("出错了");
+            }
+        });
     }
 
 }

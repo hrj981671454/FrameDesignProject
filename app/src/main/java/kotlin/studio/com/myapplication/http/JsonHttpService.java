@@ -37,11 +37,13 @@ public class JsonHttpService implements IHttpService {
     @Override
     public void excute() {
         httpPost = new HttpPost(Url);
-        ByteArrayEntity byteArrayEntity = new ByteArrayEntity(requestData);
-        httpPost.setEntity(byteArrayEntity);
+        if (null != requestData && requestData.length > 0) {
+            ByteArrayEntity byteArrayEntity = new ByteArrayEntity(requestData);
+            httpPost.setEntity(byteArrayEntity);
+        }
+
         try {
             httpClient.execute(httpPost, httpResponseHandler);
-
         } catch (IOException e) {
             e.printStackTrace();
             httpListener.onFail();
@@ -72,7 +74,6 @@ public class JsonHttpService implements IHttpService {
             } else {
                 httpListener.onFail();
             }
-
             return null;
         }
     }
