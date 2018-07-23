@@ -18,6 +18,6 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ViewInjectUtils.inject(this);
+        ViewInjectUtils.inject(this);        
     }
 }
