@@ -9,6 +9,10 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +58,25 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDao = DaoManagerFactory.getInstance().getDataHelper(DownloadDao.class, Download.class);
+        applyPermission();
+    }
+
+    private void applyPermission() {
+        AndPermission.with(this)
+                .runtime()
+                .permission(Permission.Group.STORAGE)
+                .onGranted(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        mDao = DaoManagerFactory.getInstance().getDataHelper(DownloadDao.class, Download.class);
+                    }
+                })
+                .onDenied(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        System.out.println(data.toString());
+                    }
+                }).start();
     }
 
     @OnClick(R.id.text_ioc)
