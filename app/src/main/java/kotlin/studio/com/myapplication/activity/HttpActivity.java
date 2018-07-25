@@ -5,9 +5,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import kotlin.studio.com.myapplication.R;
-import kotlin.studio.com.myapplication.bean.LoginBean;
-import kotlin.studio.com.myapplication.http.Volley;
-import kotlin.studio.com.myapplication.http.interfaces.IDataListener;
 import kotlin.studio.com.myapplication.inject.ContentView;
 import kotlin.studio.com.myapplication.inject.OnClick;
 import kotlin.studio.com.myapplication.inject.ViewInject;
@@ -44,7 +41,12 @@ public class HttpActivity extends BaseActivity {
         user.setCreateTime(System.currentTimeMillis());
         user.setOutLoginTime(System.currentTimeMillis() + 1000 * 60 * 60);
         user.setCreateTime(System.currentTimeMillis());
-        Volley.sendRequest(user, url, LoginBean.class, new IDataListener<LoginBean>() {
+
+        UserDao mUserDao = DaoManagerFactory.getInstance().getDataHelper(UserDao.class, User.class);
+        mUserDao.insert(user);
+
+
+      /*  Volley.sendRequest(user, url, LoginBean.class, new IDataListener<LoginBean>() {
             @Override
             public void onSuccess(LoginBean loginBean) {
                 if (loginBean.getReturnCode() == 200) {
@@ -52,15 +54,14 @@ public class HttpActivity extends BaseActivity {
                 } else {
                     textView.setText("登录信息：" + loginBean.getInfo());
                 }
-                UserDao mUserDao = DaoManagerFactory.getInstance().getDataHelper(UserDao.class, User.class);
-                mUserDao.insert(user);
+
             }
 
             @Override
             public void onFail() {
                 textView.setText("出错了");
             }
-        });
+        });*/
     }
 
 }

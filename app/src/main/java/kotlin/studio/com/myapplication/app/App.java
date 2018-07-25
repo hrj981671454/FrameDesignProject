@@ -14,8 +14,8 @@ import android.os.Environment;
 public class App extends Application {
     private static App     instance;
     private static Context context;
-    private final String dataBasePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/.com.eaju.main/database/";
-    private final String logPath      = Environment.getExternalStorageDirectory().getAbsolutePath() + "/.com.eaju.main/log/";
+    private final String dataBasePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/com.eaju.main/database/";
+    private final String logPath      = Environment.getExternalStorageDirectory().getAbsolutePath() + "/com.eaju.main/log/";
 
     public String getLogPath() {
         return logPath;
@@ -38,6 +38,5 @@ public class App extends Application {
         super.onCreate();
         context = this;
         instance = this;
-
     }
 }

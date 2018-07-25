@@ -1,10 +1,11 @@
 package kotlin.studio.com.myapplication.sql.update;
 
+import java.io.File;
+
 import kotlin.studio.com.myapplication.app.App;
 import kotlin.studio.com.myapplication.sql.bean.User;
 import kotlin.studio.com.myapplication.sql.dao.UserDao;
 import kotlin.studio.com.myapplication.sql.factory.DaoManagerFactory;
-import kotlin.studio.com.myapplication.utils.FileUtil;
 
 /**
  * Created by david on 20/1/2017.
@@ -30,20 +31,14 @@ public enum PrivateDataBaseEnums {
         UserDao userDao = DaoManagerFactory.getInstance().getDataHelper(UserDao.class, User.class);
         if (userDao != null) {
             User currentUser = userDao.queryLoginStatus();
+            File file = new File(App.getInstance().getDataBasePath(), "user");
             if (currentUser != null) {
-                Boolean fileIsExist = FileUtil.isFileExist(this.value);
-                if (!fileIsExist) {
-                    FileUtil.createFile(this.value);
+                if (!file.exists()) {
+                    file.mkdirs();
                 }
-                return this.value + "/login.db";
-            } else {
-                Boolean fileIsExist = FileUtil.isFileExist(this.value);
-                if (!fileIsExist) {
-                    FileUtil.createFile(this.value);
-                }
-                return this.value + "/login.db";
+                return file.getAbsolutePath() + "/" + currentUser.getPhoneNumber() + "/login.db";
             }
         }
-        return this.value;
+        return value;
     }
 }

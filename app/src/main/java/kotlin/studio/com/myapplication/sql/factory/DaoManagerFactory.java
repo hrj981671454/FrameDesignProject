@@ -9,6 +9,7 @@ import java.util.Map;
 
 import kotlin.studio.com.myapplication.app.App;
 import kotlin.studio.com.myapplication.sql.dao.BaseDao;
+import kotlin.studio.com.myapplication.sql.update.PrivateDataBaseEnums;
 import kotlin.studio.com.myapplication.utils.FileUtil;
 
 /**
@@ -22,6 +23,7 @@ public class DaoManagerFactory {
 
     private String         path;
     private SQLiteDatabase sqLiteDatabase;
+    private SQLiteDatabase userDatabase;
     private Map<String, BaseDao> map = Collections.synchronizedMap(new HashMap<String, BaseDao>());
 
     private static DaoManagerFactory instance = new DaoManagerFactory(new File(App.getInstance().getDataBasePath(), "yianju.db"));
@@ -47,6 +49,22 @@ public class DaoManagerFactory {
         try {
             baseDao = clazz.newInstance();
             baseDao.init(entity, sqLiteDatabase);
+            map.put(clazz.getSimpleName(), baseDao);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return (T) baseDao;
+    }
+
+    public synchronized <T extends BaseDao<M>, M> T getUserHelper(Class<T> clazz, Class<M> entity) {
+        System.out.println(PrivateDataBaseEnums.database.getValue());
+        userDatabase = SQLiteDatabase.openOrCreateDatabase(PrivateDataBaseEnums.database.getValue(), null);
+        BaseDao baseDao = null;
+        try {
+            baseDao = clazz.newInstance();
+            baseDao.init(entity, userDatabase);
             map.put(clazz.getSimpleName(), baseDao);
         } catch (InstantiationException e) {
             e.printStackTrace();
