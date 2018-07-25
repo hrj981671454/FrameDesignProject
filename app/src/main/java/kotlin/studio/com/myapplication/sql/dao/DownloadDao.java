@@ -1,7 +1,5 @@
 package kotlin.studio.com.myapplication.sql.dao;
 
-import java.util.ArrayList;
-
 /**
  * Description:
  * Copyright  : Copyright (c) 2016
@@ -15,8 +13,8 @@ public class DownloadDao extends BaseDao {
         return "create table if not exists download(name varchar(20),password varchar(20),age Integer(10))";
     }
 
-    @Override
-    public ArrayList query(Object where) {
-        return super.query(where);
+
+    public String updateDataBase(){
+        return "alert table download add column test ";
     }
 }

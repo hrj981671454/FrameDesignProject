@@ -1,6 +1,13 @@
 package kotlin.studio.com.myapplication.sql.dao;
 
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import kotlin.studio.com.myapplication.sql.bean.User;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Description:
@@ -9,10 +16,44 @@ import java.util.List;
  * Author     : 关羽
  * Date       : 2018-07-18 16:00
  */
-public class UserDao extends BaseDao {
+public class UserDao extends BaseDao<User> {
     @Override
     public String createDataBase() {
-        return "create table if not exists tb_user(name varchar(20),password varchar(20))";
+        return "create table if not exists tb_user(phoneNumber varchar(20)," +
+                "password varchar(50)," +
+                "isLogin varchar(20)," +
+                "token varchar(50)," +
+                "loginTime LONG," +
+                "outLoginTime LONG," +
+                "createTime LONG" + ")";
+    }
+
+
+    @Override
+    public Long insert(User entity) {
+        List<User> list = query(new User());
+        User where = null;
+        for (User user : list) {
+            where = new User();
+            where.setPhoneNumber(user.getPhoneNumber());
+            user.setLogin(false);
+            update(user, where);
+        }
+        Log.i(TAG, "用户" + entity.getPhoneNumber() + "登录");
+        entity.setLogin(true);
+        return super.insert(entity);
+    }
+
+
+    public User queryLoginStatus() {
+        User user = new User();
+        user.setLogin(true);
+        ArrayList<User> query = queryAll(user);
+        if (query.size() > 0) {
+            User loginSuccess = query.get(0);
+            return loginSuccess;
+        }
+        return null;
     }
 
 }

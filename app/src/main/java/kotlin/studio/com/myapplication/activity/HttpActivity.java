@@ -12,6 +12,8 @@ import kotlin.studio.com.myapplication.inject.ContentView;
 import kotlin.studio.com.myapplication.inject.OnClick;
 import kotlin.studio.com.myapplication.inject.ViewInject;
 import kotlin.studio.com.myapplication.sql.bean.User;
+import kotlin.studio.com.myapplication.sql.dao.UserDao;
+import kotlin.studio.com.myapplication.sql.factory.DaoManagerFactory;
 
 /**
  * Description:
@@ -34,9 +36,14 @@ public class HttpActivity extends BaseActivity {
 
     @OnClick(R.id.text_ioc)
     public void onclick(View view) {
-        User user = new User();
+        final User user = new User();
+        user.setPhoneNumber("15110272604");
         user.setPassword("123456");
-        user.setName("15110272604");
+        user.setLogin(true);
+        user.setToken("1234787965465");
+        user.setCreateTime(System.currentTimeMillis());
+        user.setOutLoginTime(System.currentTimeMillis() + 1000 * 60 * 60);
+        user.setCreateTime(System.currentTimeMillis());
         Volley.sendRequest(user, url, LoginBean.class, new IDataListener<LoginBean>() {
             @Override
             public void onSuccess(LoginBean loginBean) {
@@ -45,6 +52,8 @@ public class HttpActivity extends BaseActivity {
                 } else {
                     textView.setText("登录信息：" + loginBean.getInfo());
                 }
+                UserDao mUserDao = DaoManagerFactory.getInstance().getDataHelper(UserDao.class, User.class);
+                mUserDao.insert(user);
             }
 
             @Override
