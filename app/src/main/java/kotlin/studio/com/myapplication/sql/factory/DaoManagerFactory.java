@@ -59,8 +59,12 @@ public class DaoManagerFactory {
     }
 
     public synchronized <T extends BaseDao<M>, M> T getUserHelper(Class<T> clazz, Class<M> entity) {
-        System.out.println(PrivateDataBaseEnums.database.getValue());
-        userDatabase = SQLiteDatabase.openOrCreateDatabase(PrivateDataBaseEnums.database.getValue(), null);
+        String value = PrivateDataBaseEnums.database.getValue();
+        Boolean fileIsExist = FileUtil.isFileExist(value);
+        if (!fileIsExist) {
+            FileUtil.createFile(value);
+        }
+        userDatabase = SQLiteDatabase.openOrCreateDatabase(value, null);
         BaseDao baseDao = null;
         try {
             baseDao = clazz.newInstance();

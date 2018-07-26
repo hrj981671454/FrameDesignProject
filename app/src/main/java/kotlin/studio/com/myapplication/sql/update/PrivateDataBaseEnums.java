@@ -17,7 +17,6 @@ public enum PrivateDataBaseEnums {
      * 存放本地数据库的路径
      */
     database(App.getInstance().getDataBasePath() + "/database/");
-
     /**
      * 文件存储的文件路径
      */

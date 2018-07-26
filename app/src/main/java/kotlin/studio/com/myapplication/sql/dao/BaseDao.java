@@ -33,7 +33,7 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
 
     public synchronized boolean init(Class<T> entity, SQLiteDatabase sqLiteDatabase) {
         if (!isInit) {
-            entityClass = entity;
+            this.entityClass = entity;
             this.sqLiteDatabase = sqLiteDatabase;
             if (entity.getAnnotation(DbTable.class) == null) {
                 tableName = entity.getClass().getSimpleName();
@@ -147,7 +147,7 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
 
         SQLUtil.Condition condition = new SQLUtil.Condition(map);
         Cursor cursor = sqLiteDatabase.query(tableName,
-                condition.kets,
+                null,
                 condition.whereClause,
                 condition.whereArgs,
                 null,

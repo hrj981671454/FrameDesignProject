@@ -16,16 +16,6 @@ public class User {
     public User() {
     }
 
-    public User(String phoneNumber, String password, Boolean isLogin, String token, Long loginTime, Long outLoginTime, Long createTime) {
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.isLogin = isLogin;
-        this.token = token;
-        this.loginTime = loginTime;
-        this.outLoginTime = outLoginTime;
-        this.createTime = createTime;
-    }
-
     @DbField("phoneNumber")
     public String phoneNumber;
 
