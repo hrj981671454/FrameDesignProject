@@ -23,8 +23,8 @@ import kotlin.studio.com.myapplication.inject.ContentView;
 import kotlin.studio.com.myapplication.inject.OnClick;
 import kotlin.studio.com.myapplication.inject.OnLongClick;
 import kotlin.studio.com.myapplication.inject.ViewInject;
-import kotlin.studio.com.myapplication.sql.bean.Download;
-import kotlin.studio.com.myapplication.sql.dao.DownloadDao;
+import kotlin.studio.com.myapplication.sql.bean.LoginInfo;
+import kotlin.studio.com.myapplication.sql.dao.LoginInfoDao;
 import kotlin.studio.com.myapplication.sql.factory.DaoManagerFactory;
 import kotlin.studio.com.myapplication.utils.LogsUtils;
 
@@ -46,13 +46,11 @@ public class MainActivity extends BaseActivity {
     Button   textView3;
     @ViewInject(R.id.text_ioc4)
     Button   textView4;
-    @ViewInject(R.id.text_ioc5)
-    Button   textView5;
     @ViewInject(R.id.text_ioc6)
     Button   textView6;
     @ViewInject(R.id.lvList)
     ListView lvList;
-    private DownloadDao mDao;
+    private LoginInfoDao mDao;
 
 
     @Override
@@ -68,7 +66,7 @@ public class MainActivity extends BaseActivity {
                 .onGranted(new Action<List<String>>() {
                     @Override
                     public void onAction(List<String> data) {
-                        mDao = DaoManagerFactory.getInstance().getDataHelper(DownloadDao.class, Download.class);
+                        mDao = DaoManagerFactory.getInstance().getDataHelper(LoginInfoDao.class, LoginInfo.class);
                     }
                 })
                 .onDenied(new Action<List<String>>() {
@@ -82,35 +80,35 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.text_ioc)
     public void click(View view) {
         for (int i = 0; i < 10; i++) {
-            Download download = new Download();
-            download.setName("何仁杰" + i);
-            download.setPassword("123456" + i);
-            download.setAge(i);
-            mDao.insert(download);
+            LoginInfo loginInfo = new LoginInfo();
+            loginInfo.setName("何仁杰" + i);
+            loginInfo.setPassword("123456" + i);
+            loginInfo.setAge(i);
+            mDao.insert(loginInfo);
         }
     }
 
     @OnClick(R.id.text_ioc2)
     public void click2(View view) {
-        Download download = new Download();
-        download.setName("111111");
-        download.setPassword("888888");
-        download.setAge(666666);
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setName("111111");
+        loginInfo.setPassword("888888");
+        loginInfo.setAge(666666);
 
-        Download where = new Download();
+        LoginInfo where = new LoginInfo();
         where.setName("何仁杰2");
         where.setPassword("1234562");
         where.setAge(2);
-        mDao.update(download, where);
+        mDao.update(loginInfo, where);
     }
 
     @OnClick(R.id.text_ioc3)
     public void click3(View view) {
-        Download download = new Download();
-        download.setName("111111");
-        download.setPassword("888888");
-        download.setAge(666666);
-        ArrayList<Download> arrayList = mDao.query(download, null, null, null);
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setName("111111");
+        loginInfo.setPassword("888888");
+        loginInfo.setAge(666666);
+        ArrayList<LoginInfo> arrayList = mDao.query(loginInfo, null, null, null);
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
         for (int i = 0; i < arrayList.size(); i++) {
             HashMap<String, Object> item = new HashMap<String, Object>();
@@ -129,8 +127,8 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.text_ioc4)
     public void click4(View view) {
-        Download download = new Download();
-        boolean b = mDao.deleteAll(download);
+        LoginInfo loginInfo = new LoginInfo();
+        boolean b = mDao.deleteAll(loginInfo);
         LogsUtils.logI(getClass(), b + "");
     }
 
@@ -139,12 +137,6 @@ public class MainActivity extends BaseActivity {
     public boolean onLongClick(View view) {
         Toast.makeText(MainActivity.this, "我被点了", Toast.LENGTH_LONG).show();
         return false;
-    }
-
-
-    @OnClick(R.id.text_ioc5)
-    public void click5(View view) {
-
     }
 
     @OnClick(R.id.text_ioc6)

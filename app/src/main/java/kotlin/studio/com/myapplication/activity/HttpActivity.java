@@ -10,12 +10,12 @@ import kotlin.studio.com.myapplication.R;
 import kotlin.studio.com.myapplication.inject.ContentView;
 import kotlin.studio.com.myapplication.inject.OnClick;
 import kotlin.studio.com.myapplication.inject.ViewInject;
-import kotlin.studio.com.myapplication.sql.bean.Download;
+import kotlin.studio.com.myapplication.sql.bean.LoginInfo;
 import kotlin.studio.com.myapplication.sql.bean.User;
-import kotlin.studio.com.myapplication.sql.dao.DownloadDao;
+import kotlin.studio.com.myapplication.sql.dao.LoginInfoDao;
 import kotlin.studio.com.myapplication.sql.dao.UserDao;
 import kotlin.studio.com.myapplication.sql.factory.DaoManagerFactory;
-import kotlin.studio.com.myapplication.sql.update.UpdateManager;
+import kotlin.studio.com.myapplication.sql.update.UpdateUtil;
 
 /**
  * Description:
@@ -30,26 +30,28 @@ public class HttpActivity extends BaseActivity {
     @ViewInject(R.id.text_ioc)
     Button button;
 
-
-    @ViewInject(R.id.text_ioc2)
-    Button button2;
+    @ViewInject(R.id.text_ioc3)
+    Button button3;
 
     @ViewInject(R.id.tvResult)
     TextView textView;
 
-    String url = "http://superapp.51eanj.com:82/eaju_app_service/super/eajAppUserRegister/login";
-    private UserDao dataHelper;
+    //    String url = "http://superapp.51eanj.com:82/eaju_app_service/super/eajAppUserRegister/login";
+    private UserDao    dataHelper;
+    private UpdateUtil updateManager;
+    int i = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataHelper = DaoManagerFactory.getInstance().getDataHelper(UserDao.class, User.class);
+        updateManager = new UpdateUtil();
     }
 
     @OnClick(R.id.text_ioc)
     public void onclick(View view) {
         final User user = new User();
-        user.setPhoneNumber("15296711325");
+        user.setPhoneNumber("888888" + i++);
         user.setPassword("123456");
         user.setLogin(true);
         user.setToken("1234787965465");
@@ -59,37 +61,24 @@ public class HttpActivity extends BaseActivity {
 
         dataHelper.insert(user);
 
-        UpdateManager updateManager = new UpdateManager();
-        updateManager.checkThisVersionTable(this);
 
-      /*  Volley.sendRequest(user, url, LoginBean.class, new IDataListener<LoginBean>() {
-            @Override
-            public void onSuccess(LoginBean loginBean) {
-                if (loginBean.getReturnCode() == 200) {
-                    textView.setText("登录信息：" + loginBean.getInfo());
-                } else {
-                    textView.setText("登录信息：" + loginBean.getInfo());
-                }
-
-            }
-
-            @Override
-            public void onFail() {
-                textView.setText("出错了");
-            }
-        });*/
+        LoginInfoDao userHelper = DaoManagerFactory.getInstance().getUserHelper(LoginInfoDao.class, LoginInfo.class);
+        for (int i = 0; i < 10; i++) {
+            LoginInfo loginInfo = new LoginInfo();
+            loginInfo.setName("何仁杰" + i);
+            loginInfo.setPassword("123456" + i);
+            loginInfo.setAge(i);
+            System.out.println(userHelper.insert(loginInfo));
+        }
     }
 
+    @OnClick(R.id.text_ioc3)
+    public void onClick3(View view) {
+        updateManager.saveVersionInfo(this, "2.0");
 
-    @OnClick(R.id.text_ioc2)
-    public void onclick2(View view) {
-        DownloadDao userHelper = DaoManagerFactory.getInstance().getUserHelper(DownloadDao.class, Download.class);
-        for (int i = 0; i < 10; i++) {
-            Download download = new Download();
-            download.setName("何仁杰" + i);
-            download.setPassword("123456" + i);
-            download.setAge(i);
-            userHelper.insert(download);
-        }
+        updateManager.checkThisVersionTable(this);
+        
+        updateManager.startUpdateDb(this);
+
     }
 }

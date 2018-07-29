@@ -24,23 +24,21 @@ import kotlin.studio.com.myapplication.sql.bean.User;
 import kotlin.studio.com.myapplication.sql.dao.UserDao;
 import kotlin.studio.com.myapplication.sql.factory.DaoManagerFactory;
 import kotlin.studio.com.myapplication.utils.FileUtil;
-import kotlin.studio.com.myapplication.utils.LogsUtils;
 
 /**
  * Description:
  * Copyright  : Copyright (c) 2016
  * Company    : Android
  * Author     : 关羽
- * Date       : 2018-07-23 16:46
+ * Date       : 2018/7/29 15:42
  */
-
-public class UpdateManager {
+public class UpdateUtil {
     private static final String INFO_FILE_DIV = "/";
     private List<User> userList;
     private File parentFile = new File(App.getInstance().getDataBasePath(), "user");
-    private File bakFile    = new File(parentFile, "backDb");
+    private File bakFile    = new File(parentFile, "backUpDb");
 
-    public UpdateManager() {
+    public UpdateUtil() {
         if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
@@ -49,83 +47,87 @@ public class UpdateManager {
         }
     }
 
+    /**
+     * 检查数据库变化
+     * @param context
+     */
     public void checkThisVersionTable(Context context) {
         UserDao userDao = DaoManagerFactory.getInstance().getDataHelper(UserDao.class, User.class);
 
         userList = userDao.query(new User());
+
+        //读物升级xml脚本信息
         UpdateDbXml xml = readDbXml(context);
 
         String thisVersion = this.getVersionName(context);
+        //获取对应版本的建表脚本
         CreateVersion thisCreateVersion = analyseCreateVersion(xml, thisVersion);
         try {
+            //根据建表脚本,核实一遍应该存在的表
             executeCreateVersion(thisCreateVersion, true);
         } catch (Exception e) {
         }
     }
 
-    /*
-     * 开始升级
+
+    /**
+     * 读取升级xml
      * @param context
+     * @return
      */
-    public void startUpdateDb(Context context) {
-        //读取升级xml
-        UpdateDbXml updateDbxml = readDbXml(context);
-
-
-        if (getLocalVersionInfo()) {
-            //拿到当前版本
-            String thisVersion = getVersionName(context);
-            //拿到上一个版本
-            String lastVersion = lastBackupVersion;
-            UpdateStep updateStep = analyseUpdateStep(updateDbxml, lastVersion, thisVersion);
-
-            if (updateStep == null) {
-                return;
-            }
-            List<UpdateDb> updateDbs = updateStep.getUpdateDbs();
-            CreateVersion createVersion = analyseCreateVersion(updateDbxml, thisVersion);
-
-            try {
-                //更新每个用户的数据库
-                for (User user : userList) {
-                    String logicDbDir = parentFile.getAbsolutePath() + "/update" + "/" + user.getPhoneNumber() + "/login.db";
-
-                    String logicCopy = bakFile.getAbsolutePath() + "/" + user.getPhoneNumber() + "/login.db";
-                    FileUtil.CopySingleFile(logicDbDir, logicCopy);
+    private UpdateDbXml readDbXml(Context context) {
+        InputStream is = null;
+        Document document = null;
+        try {
+            is = context.getAssets().open("updateXml.xml");
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            document = builder.parse(is);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                //备份总数据库
-                String user = parentFile.getAbsolutePath() + "/user.db";
-                String user_bak = bakFile.getAbsolutePath() + "/user.db";
-                FileUtil.CopySingleFile(user, user_bak);
-                // 第二步:执行sql_before语句，删除以及备份相关旧表
-                executeDb(updateDbs, -1);
-
-                // 第三步:检查新表，创建新表
-                executeCreateVersion(createVersion, false);
-
-                LogsUtils.logI(UpdateManager.class, "第三步检查新表完成");
-                // 第四步:从备份表中恢复数据，恢复后删除备份表
-                executeDb(updateDbs, 1);
-            } catch (Exception e) {
-
             }
-            // 第五步:升级成功，删除备份数据库
-            if (userList != null && !userList.isEmpty()) {
-                for (User user : userList) {
-                    String logicDbDir = parentFile.getAbsolutePath() + "/update" + "/" + user.getPhoneNumber() + ".db";
-                    File file = new File(logicDbDir);
-                    if (file.exists()) {
-                        file.delete();
+        }
+        if (document == null) {
+            return null;
+        }
+
+        UpdateDbXml xml = new UpdateDbXml(document);
+
+        return xml;
+    }
+
+    /**
+     * 解析出对应版本的建表脚本
+     * @return
+     */
+    private CreateVersion analyseCreateVersion(UpdateDbXml xml, String version) {
+        CreateVersion cv = null;
+        if (xml == null || version == null) {
+            return cv;
+        }
+
+        List<CreateVersion> createVersions = xml.getCreateVersions();
+        if (createVersions != null) {
+            for (CreateVersion item : createVersions) {
+                // 如果表相同则要支持xml中逗号分隔
+                String[] createVersion = item.getVersion().trim().split(",");
+
+                for (int i = 0; i < createVersion.length; i++) {
+                    if (createVersion[i].trim().equalsIgnoreCase(version)) {
+                        cv = item;
+                        break;
                     }
                 }
             }
-            File userFileBak = new File(bakFile.getAbsolutePath() + "user_bak.db");
-            if (userFileBak.exists()) {
-                userFileBak.delete();
-            }
-
-            LogsUtils.logI(UpdateManager.class, "升级成功");
         }
+
+        return cv;
     }
 
     /**
@@ -175,58 +177,6 @@ public class UpdateManager {
 
 
     /**
-     * 执行针对db升级的sql集合
-     * @param updateDbs
-     *         数据库操作脚本集合
-     * @param type
-     *         小于0为建表前，大于0为建表后
-     * @throws Exception
-     * @throws throws
-     *         [违例类型] [违例说明]
-     * @see
-     */
-    private void executeDb(List<UpdateDb> updateDbs, int type) throws Exception {
-        if (updateDbs == null) {
-            throw new Exception("updateDbs is null;");
-        }
-        for (UpdateDb db : updateDbs) {
-            if (db == null || db.getDbName() == null) {
-                throw new Exception("db or dbName is null;");
-            }
-
-            List<String> sqls = null;
-            //更改表
-            if (type < 0) {
-                sqls = db.getSqlBefores();
-            } else if (type > 0) {
-                sqls = db.getSqlAfters();
-            }
-
-            SQLiteDatabase sqlitedb = null;
-
-            try {
-                // 逻辑层数据库要做多用户升级
-                if (userList != null && !userList.isEmpty()) {
-                    // 多用户表升级
-                    for (int i = 0; i < userList.size(); i++) {
-                        sqlitedb = getDb(db, userList.get(i).getPhoneNumber());
-
-                        executeSql(sqlitedb, sqls);
-
-                        sqlitedb.close();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (null != sqlitedb) {
-                    sqlitedb.close();
-                }
-            }
-        }
-    }
-
-    /**
      * 执行sql语句
      * @param sqlitedb
      *         SQLiteDatabase
@@ -263,66 +213,6 @@ public class UpdateManager {
         sqlitedb.endTransaction();
     }
 
-
-    /**
-     * 新表插入数据
-     * @param xml
-     * @param lastVersion
-     *         上个版本
-     * @param thisVersion
-     *         当前版本
-     * @return
-     */
-    private UpdateStep analyseUpdateStep(UpdateDbXml xml, String lastVersion, String thisVersion) {
-        if (lastVersion == null || thisVersion == null) {
-            return null;
-        }
-
-        // 更新脚本
-        UpdateStep thisStep = null;
-        if (xml == null) {
-            return null;
-        }
-        List<UpdateStep> steps = xml.getUpdateSteps();
-        if (steps == null || steps.size() == 0) {
-            return null;
-        }
-
-        for (UpdateStep step : steps) {
-            if (step.getVersionFrom() == null || step.getVersionTo() == null) {
-            } else {
-                // 升级来源以逗号分隔
-                String[] lastVersionArray = step.getVersionFrom().split(",");
-
-                if (lastVersionArray != null && lastVersionArray.length > 0) {
-                    for (int i = 0; i < lastVersionArray.length; i++) {
-                        // 有一个配到update节点即升级数据
-                        if (lastVersion.equalsIgnoreCase(lastVersionArray[i]) && step.getVersionTo().equalsIgnoreCase(thisVersion)) {
-                            thisStep = step;
-
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        return thisStep;
-    }
-
-    /**
-     * 根据xml对象获取对应要修改的db文件
-     * @param db
-     * @return
-     */
-    private SQLiteDatabase getDb(UpdateDb db, String userId) {
-        return getDb(db.getDbName(), userId);
-    }
-
-    private SQLiteDatabase getDb(CreateDb db, String userId) {
-        return getDb(db.getName(), userId);
-    }
-
     /**
      * 创建数据库,获取数据库对应的SQLiteDatabase
      * @param dbname
@@ -357,67 +247,18 @@ public class UpdateManager {
         return sqlitedb;
     }
 
-
     /**
-     * 解析出对应版本的建表脚本
+     * 根据xml对象获取对应要修改的db文件
+     * @param db
      * @return
      */
-    private CreateVersion analyseCreateVersion(UpdateDbXml xml, String version) {
-        CreateVersion cv = null;
-        if (xml == null || version == null) {
-            return cv;
-        }
-
-        List<CreateVersion> createVersions = xml.getCreateVersions();
-        if (createVersions != null) {
-            for (CreateVersion item : createVersions) {
-                // 如果表相同则要支持xml中逗号分隔
-                String[] createVersion = item.getVersion().trim().split(",");
-
-                for (int i = 0; i < createVersion.length; i++) {
-                    if (createVersion[i].trim().equalsIgnoreCase(version)) {
-                        cv = item;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return cv;
+    private SQLiteDatabase getDb(UpdateDb db, String userId) {
+        return getDb(db.getDbName(), userId);
     }
 
-    /**
-     * 读取升级xml
-     * @param context
-     * @return
-     */
-    private UpdateDbXml readDbXml(Context context) {
-        InputStream is = null;
-        Document document = null;
-        try {
-            is = context.getAssets().open("updateXml.xml");
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            document = builder.parse(is);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if (document == null) {
-            return null;
-        }
-
-        UpdateDbXml xml = new UpdateDbXml(document);
-
-        return xml;
+    private SQLiteDatabase getDb(CreateDb db, String userId) {
+        return getDb(db.getName(), userId);
     }
-
 
     /**
      * 获取APK版本号
@@ -512,5 +353,169 @@ public class UpdateManager {
         }
 
         return ret;
+    }
+
+    /*
+     * 开始升级
+     * @param context
+     */
+    public void startUpdateDb(Context context) {
+        UpdateDbXml updateDbxml = readDbXml(context);
+        try {
+            //第一步：备份数据库  更新每个用户的数据库
+            for (User user : userList) {
+                String logicDbDir = parentFile.getAbsolutePath() + "/" + user.getPhoneNumber() + "/login.db";
+
+                String logicCopy = bakFile.getAbsolutePath() + "/" + user.getPhoneNumber() + "/login.db";
+                FileUtil.CopySingleFile(logicDbDir, logicCopy);
+            }
+
+            //第二步：备份总数据库表
+            String yianju = App.getInstance().getDataBasePath() + "/yianju.db";
+
+            String yianjuBack = bakFile.getAbsolutePath() + "/yianju.db";
+            FileUtil.CopySingleFile(yianju, yianjuBack);
+
+
+            //第三步：获取当前版本信息
+            String versionName = getVersionName(context);
+            //获取版本检查更新数据，如有有版本更新，就会在数据库存放地址生成update.txt文件，文件内存放新版和旧版版本号 ，判断是否需要升级数据库
+            if (getLocalVersionInfo()) {
+
+                //拿到当前版本
+                String thisVersion = getVersionName(context);
+                //拿到上一个版本
+                String lastVersion = lastBackupVersion;
+
+                //插入数据
+                UpdateStep updateStep = analyseUpdateStep(updateDbxml, lastVersion, thisVersion);
+
+                if (updateStep == null) {
+                    return;
+                }
+
+                //获取更新数据库脚本集合
+                List<UpdateDb> updateDbs = updateStep.getUpdateDbs();
+
+                //解析出对应版本的建表脚本
+                CreateVersion createVersion = analyseCreateVersion(updateDbxml, thisVersion);
+
+                // 第四步:执行sql_before语句，删除以及备份相关旧表
+                executeDb(updateDbs, -1);
+
+
+                // 第五步:检查新表，创建新表
+                executeCreateVersion(createVersion, false);
+
+                // 第六步:从备份表中恢复数据，恢复后删除备份表
+                executeDb(updateDbs, 1);
+
+                // 第五步:升级成功，删除备份数据库
+                if (userList != null && !userList.isEmpty()) {
+                    FileUtil.deleteFile(bakFile.getAbsolutePath());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 执行针对db升级的sql集合
+     * @param updateDbs
+     *         数据库操作脚本集合
+     * @param type
+     *         小于0为建表前，大于0为建表后
+     * @throws Exception
+     * @throws throws
+     *         [违例类型] [违例说明]
+     * @see
+     */
+    private void executeDb(List<UpdateDb> updateDbs, int type) throws Exception {
+        if (updateDbs == null) {
+            throw new Exception("updateDbs is null;");
+        }
+        for (UpdateDb db : updateDbs) {
+            if (db == null || db.getDbName() == null) {
+                throw new Exception("db or dbName is null;");
+            }
+
+            List<String> sqls = null;
+            //更改表
+            if (type < 0) {
+                sqls = db.getSqlBefores();
+            } else if (type > 0) {
+                sqls = db.getSqlAfters();
+            }
+
+            SQLiteDatabase sqlitedb = null;
+
+            try {
+                // 逻辑层数据库要做多用户升级
+                if (userList != null && !userList.isEmpty()) {
+                    // 多用户表升级
+                    for (int i = 0; i < userList.size(); i++) {
+                        sqlitedb = getDb(db, userList.get(i).getPhoneNumber());
+
+                        executeSql(sqlitedb, sqls);
+
+                        sqlitedb.close();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (null != sqlitedb) {
+                    sqlitedb.close();
+                }
+            }
+        }
+    }
+
+    /**
+     * 新表插入数据
+     * @param xml
+     * @param lastVersion
+     *         上个版本
+     * @param thisVersion
+     *         当前版本
+     * @return
+     */
+    private UpdateStep analyseUpdateStep(UpdateDbXml xml, String lastVersion, String thisVersion) {
+        if (lastVersion == null || thisVersion == null) {
+            return null;
+        }
+
+        // 更新脚本
+        UpdateStep thisStep = null;
+        if (xml == null) {
+            return null;
+        }
+        List<UpdateStep> steps = xml.getUpdateSteps();
+        if (steps == null || steps.size() == 0) {
+            return null;
+        }
+
+        for (UpdateStep step : steps) {
+            if (step.getVersionFrom() == null || step.getVersionTo() == null) {
+            } else {
+                // 升级来源以逗号分隔
+                String[] lastVersionArray = step.getVersionFrom().split(",");
+
+                if (lastVersionArray != null && lastVersionArray.length > 0) {
+                    for (int i = 0; i < lastVersionArray.length; i++) {
+                        // 有一个配到update节点即升级数据
+                        if (lastVersion.equalsIgnoreCase(lastVersionArray[i]) && step.getVersionTo().equalsIgnoreCase(thisVersion)) {
+                            thisStep = step;
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return thisStep;
     }
 }

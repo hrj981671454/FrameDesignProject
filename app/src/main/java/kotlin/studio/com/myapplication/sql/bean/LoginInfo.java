@@ -10,8 +10,8 @@ import kotlin.studio.com.myapplication.sql.DbTable;
  * Author     : 关羽
  * Date       : 2018-07-20 14:23
  */
-@DbTable("download")
-public class Download {
+@DbTable("loginInfo")
+public class LoginInfo {
 
     @DbField("name")
     public String name;

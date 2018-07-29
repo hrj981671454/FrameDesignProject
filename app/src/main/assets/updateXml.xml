@@ -1,0 +1,67 @@
+﻿<!-- 请保证该文档一定是 UTF-8编码 -->
+<updateXml>
+    <createVersion version="2.0">
+        <createDb name="yianju">
+            <!-- 设备与软件关联信息 -->
+            <sql_createTable>
+                create table if not exists tb_user(
+                phoneNumber TEXT,
+                password TEXT,
+                isLogin TEXT,
+                token TEXT,
+                loginTime LONG,
+                outLoginTime LONG,
+                createTime LONG,
+                userType TEXT
+                );
+            </sql_createTable>
+        </createDb>
+        <createDb name="login">
+            <!-- 设备与软件关联信息 -->
+            <sql_createTable>
+                create table if not exists loginInfo(
+                name TEXT,
+                password TEXT,
+                age TEXT,
+                userID TEXT
+                );
+            </sql_createTable>
+        </createDb>
+    </createVersion>
+    <updateStep
+        versionFrom="1.0"
+        versionTo="2.0">
+        <updateDb name="yianju">
+            <sql_before>alter table tb_user rename to bak_tb_user;</sql_before>
+            <sql_after>
+                insert into tb_user(phoneNumber,
+                password,
+                isLogin,
+                token,
+                loginTime,
+                outLoginTime,
+                createTime)
+                select isLogin, token, loginTime, outLoginTime, createTime
+                from bak_tb_user;
+            </sql_after>
+            <sql_after>
+                drop table if exists bak_tb_user;
+            </sql_after>
+        </updateDb>
+        <updateDb name="login">
+            <sql_before>alter table loginInfo rename to bak_loginInfo;</sql_before>
+            <sql_after>
+                insert into loginInfo(name,
+                password,
+                age,
+                userID)
+                select name, password, age, userID
+                from bak_loginInfo;
+            </sql_after>
+            <sql_after>
+                drop table if exists bak_loginInfo;
+            </sql_after>
+        </updateDb>
+    </updateStep>
+
+</updateXml>
