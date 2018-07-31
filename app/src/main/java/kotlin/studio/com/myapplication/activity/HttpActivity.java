@@ -62,13 +62,13 @@ public class HttpActivity extends BaseActivity {
         dataHelper.insert(user);
 
 
-        LoginInfoDao userHelper = DaoManagerFactory.getInstance().getUserHelper(LoginInfoDao.class, LoginInfo.class);
+       LoginInfoDao userHelper = DaoManagerFactory.getInstance().getUserHelper(LoginInfoDao.class, LoginInfo.class);
         for (int i = 0; i < 10; i++) {
             LoginInfo loginInfo = new LoginInfo();
             loginInfo.setName("何仁杰" + i);
             loginInfo.setPassword("123456" + i);
             loginInfo.setAge(i);
-            System.out.println(userHelper.insert(loginInfo));
+            userHelper.insert(loginInfo);
         }
     }
 

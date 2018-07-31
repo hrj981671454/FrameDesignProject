@@ -19,15 +19,14 @@ import static android.content.ContentValues.TAG;
 public class UserDao extends BaseDao<User> {
     @Override
     public String createDataBase() {
-        return "create table if not exists tb_user(phoneNumber varchar(20)," +
-                "password varchar(50)," +
-                "isLogin varchar(20)," +
-                "token varchar(50)," +
-                "loginTime LONG," +
-                "outLoginTime LONG," +
-                "createTime LONG" + ")";
+        return "create table if not exists tb_user(phoneNumber TEXT," +
+                "password TEXT," +
+                "isLogin TEXT," +
+                "token TEXT," +
+                "loginTime INTEGER," +
+                "outLoginTime INTEGER," +
+                "createTime INTEGER" + ")";
     }
-
 
     @Override
     public Long insert(User entity) {

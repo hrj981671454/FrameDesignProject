@@ -1,4 +1,4 @@
-﻿<!-- 请保证该文档一定是 UTF-8编码 -->
+﻿<!-- 数据库升级配置 -->
 <updateXml>
     <createVersion version="2.0">
         <createDb name="yianju">
@@ -9,9 +9,9 @@
                 password TEXT,
                 isLogin TEXT,
                 token TEXT,
-                loginTime LONG,
-                outLoginTime LONG,
-                createTime LONG,
+                loginTime INTEGER,
+                outLoginTime INTEGER,
+                createTime INTEGER,
                 userType TEXT
                 );
             </sql_createTable>
@@ -41,7 +41,7 @@
                 loginTime,
                 outLoginTime,
                 createTime)
-                select isLogin, token, loginTime, outLoginTime, createTime
+                select phoneNumber, password, isLogin, token, loginTime, outLoginTime, createTime
                 from bak_tb_user;
             </sql_after>
             <sql_after>
@@ -53,9 +53,8 @@
             <sql_after>
                 insert into loginInfo(name,
                 password,
-                age,
-                userID)
-                select name, password, age, userID
+                age)
+                select name, password, age
                 from bak_loginInfo;
             </sql_after>
             <sql_after>

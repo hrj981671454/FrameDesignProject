@@ -3,9 +3,8 @@ package kotlin.studio.com.myapplication.sql.update;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
+import android.widget.Toast;
 
 import org.w3c.dom.Document;
 
@@ -56,17 +55,17 @@ public class UpdateUtil {
 
         userList = userDao.query(new User());
 
-        //读物升级xml脚本信息
-        UpdateDbXml xml = readDbXml(context);
-
-        String thisVersion = this.getVersionName(context);
-        //获取对应版本的建表脚本
-        CreateVersion thisCreateVersion = analyseCreateVersion(xml, thisVersion);
-        try {
-            //根据建表脚本,核实一遍应该存在的表
-            executeCreateVersion(thisCreateVersion, true);
-        } catch (Exception e) {
-        }
+//        //读物升级xml脚本信息
+//        UpdateDbXml xml = readDbXml(context);
+//
+//        String thisVersion = this.getVersionName(context);
+//        //获取对应版本的建表脚本
+//        CreateVersion thisCreateVersion = analyseCreateVersion(xml, thisVersion);
+//        try {
+//            //根据建表脚本,核实一遍应该存在的表
+//            executeCreateVersion(thisCreateVersion, true);
+//        } catch (Exception e) {
+//        }
     }
 
 
@@ -145,30 +144,17 @@ public class UpdateUtil {
                 throw new Exception("db or dbName is null when createVersion;");
             }
 
-            if (!"login".equals(cd.getName())) {
-                continue;
-            }
-
             // 创建数据库表sql
             List<String> sqls = cd.getSqlCreates();
 
             SQLiteDatabase sqlitedb = null;
-            try {
-                // 逻辑层数据库要做多用户升级
-                if (userList != null && !userList.isEmpty()) {
-                    // 多用户建新表
-                    for (int i = 0; i < userList.size(); i++) {
-                        // 获取db
-                        sqlitedb = getDb(cd, userList.get(i).getPhoneNumber());
-                        executeSql(sqlitedb, sqls);
-                        sqlitedb.close();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                // 关闭数据库
-                if (sqlitedb != null) {
+            // 逻辑层数据库要做多用户升级
+            if (userList != null && !userList.isEmpty()) {
+                // 多用户建新表
+                for (int i = 0; i < userList.size(); i++) {
+                    // 获取db
+                    sqlitedb = getDb(cd, userList.get(i).getPhoneNumber());
+                    executeSql(sqlitedb, sqls);
                     sqlitedb.close();
                 }
             }
@@ -201,14 +187,9 @@ public class UpdateUtil {
             sql = sql.replaceAll("\r\n", " ");
             sql = sql.replaceAll("\n", " ");
             if (!"".equals(sql.trim())) {
-                try {
-                    // Logger.i(TAG, "执行sql：" + sql, false);
-                    sqlitedb.execSQL(sql);
-                } catch (SQLException e) {
-                }
+                sqlitedb.execSQL(sql);
             }
         }
-
         sqlitedb.setTransactionSuccessful();
         sqlitedb.endTransaction();
     }
@@ -231,8 +212,8 @@ public class UpdateUtil {
         if (dbname.equalsIgnoreCase("login")) {
             dbfilepath = file.getAbsolutePath() + "/login.db";// logic对应的数据库路径
 
-        } else if (dbname.equalsIgnoreCase("user")) {
-            dbfilepath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/user.db";// service对应的数据库
+        } else if (dbname.equalsIgnoreCase("yianju")) {
+            dbfilepath = App.getInstance().getDataBasePath() + "/yianju.db";// service对应的数据库
         }
 
         if (dbfilepath != null) {
@@ -376,19 +357,16 @@ public class UpdateUtil {
             String yianjuBack = bakFile.getAbsolutePath() + "/yianju.db";
             FileUtil.CopySingleFile(yianju, yianjuBack);
 
-
-            //第三步：获取当前版本信息
-            String versionName = getVersionName(context);
             //获取版本检查更新数据，如有有版本更新，就会在数据库存放地址生成update.txt文件，文件内存放新版和旧版版本号 ，判断是否需要升级数据库
             if (getLocalVersionInfo()) {
 
-                //拿到当前版本
+                //第三步：获取当前版本信息 拿到当前版本
                 String thisVersion = getVersionName(context);
                 //拿到上一个版本
                 String lastVersion = lastBackupVersion;
 
                 //插入数据
-                UpdateStep updateStep = analyseUpdateStep(updateDbxml, lastVersion, thisVersion);
+                UpdateStep updateStep = analyseUpdateStep(updateDbxml, lastVersion, "2.0");
 
                 if (updateStep == null) {
                     return;
@@ -398,7 +376,7 @@ public class UpdateUtil {
                 List<UpdateDb> updateDbs = updateStep.getUpdateDbs();
 
                 //解析出对应版本的建表脚本
-                CreateVersion createVersion = analyseCreateVersion(updateDbxml, thisVersion);
+                CreateVersion createVersion = analyseCreateVersion(updateDbxml, "2.0");
 
                 // 第四步:执行sql_before语句，删除以及备份相关旧表
                 executeDb(updateDbs, -1);
@@ -416,7 +394,31 @@ public class UpdateUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            //升级发生异常，恢复备份的数据库
+
+            try {
+                for (User user : userList) {
+//                    FileUtil.deleteFile(parentFile.getAbsolutePath() + "/" + user.getPhoneNumber());
+//                    FileUtil.deleteFile(App.getInstance().getDataBasePath() + "/yianju.db");
+
+
+                    String logicDbDir = parentFile.getAbsolutePath() + "/" + user.getPhoneNumber() + "/login.db";
+
+                    String logicCopy = bakFile.getAbsolutePath() + "/" + user.getPhoneNumber() + "/login.db";
+
+                    FileUtil.CopySingleFile(logicCopy, logicDbDir);
+
+                    String yianju = App.getInstance().getDataBasePath() + "/yianju.db";
+
+                    String yianjuBack = bakFile.getAbsolutePath() + "/yianju.db";
+                    FileUtil.CopySingleFile(yianjuBack, yianju);
+                }
+            } catch (Exception i) {
+                FileUtil.deleteFile(App.getInstance().getDataBasePath());
+                DaoManagerFactory.getInstance().getDataHelper(UserDao.class, User.class);
+            }
+
         }
     }
 
@@ -451,22 +453,15 @@ public class UpdateUtil {
 
             SQLiteDatabase sqlitedb = null;
 
-            try {
-                // 逻辑层数据库要做多用户升级
-                if (userList != null && !userList.isEmpty()) {
-                    // 多用户表升级
-                    for (int i = 0; i < userList.size(); i++) {
-                        sqlitedb = getDb(db, userList.get(i).getPhoneNumber());
+            // 逻辑层数据库要做多用户升级
+            if (userList != null && !userList.isEmpty()) {
+                // 多用户表升级
+                for (int i = 0; i < userList.size(); i++) {
+                    String phoneNumber = userList.get(i).getPhoneNumber();
+                    sqlitedb = getDb(db, phoneNumber);
 
-                        executeSql(sqlitedb, sqls);
+                    executeSql(sqlitedb, sqls);
 
-                        sqlitedb.close();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (null != sqlitedb) {
                     sqlitedb.close();
                 }
             }
@@ -506,7 +501,11 @@ public class UpdateUtil {
                 if (lastVersionArray != null && lastVersionArray.length > 0) {
                     for (int i = 0; i < lastVersionArray.length; i++) {
                         // 有一个配到update节点即升级数据
-                        if (lastVersion.equalsIgnoreCase(lastVersionArray[i]) && step.getVersionTo().equalsIgnoreCase(thisVersion)) {
+
+                        boolean b = lastVersion.equalsIgnoreCase(lastVersionArray[i]);
+                        boolean b1 = step.getVersionTo().equalsIgnoreCase(thisVersion);
+
+                        if (b && b1) {
                             thisStep = step;
 
                             break;
