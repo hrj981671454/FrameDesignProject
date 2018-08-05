@@ -33,9 +33,21 @@ public class RequestDispatcher extends Thread {
                 /**
                  * 处理请求对象
                  */
+                String schema = pareSchme(request.getImageUrl());
+
+//                Loder
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private String pareSchme(String imageUrl) {
+        if (imageUrl.contains("://")) {
+            return imageUrl.split("://")[0];
+        } else {
+            //扩展
+        }
+        return null;
     }
 }

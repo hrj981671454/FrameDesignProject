@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import kotlin.studio.com.myapplication.imageload.config.DisplayConfig;
 import kotlin.studio.com.myapplication.imageload.config.ImageLoaderConfig;
+import kotlin.studio.com.myapplication.imageload.request.BitmapRequest;
 import kotlin.studio.com.myapplication.imageload.request.RequestQueue;
 
 /**
@@ -59,6 +60,8 @@ public class SimpleImageLoader {
 
     private SimpleImageLoader(ImageLoaderConfig config) {
         this.config = config;
+        mRequestQueue = new RequestQueue(config.getThreadCount());
+        //开启请求队列
     }
 
 
@@ -74,7 +77,10 @@ public class SimpleImageLoader {
     }
 
     public void diaplayImage(ImageView imageView, String URI, DisplayConfig displayConfig, ImageListener imageListener) {
-        //        BitmapRequest
+        //实例化一个对象
+        BitmapRequest bitmapRequest = new BitmapRequest(imageView, URI, displayConfig, imageListener);
+        //
+        mRequestQueue.addRequest(bitmapRequest);
 
     }
 

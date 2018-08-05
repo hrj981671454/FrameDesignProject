@@ -37,6 +37,10 @@ public class RequestQueue {
     private AtomicInteger i = new AtomicInteger(0);
 
 
+    public RequestQueue(int threadCount) {
+        this.threadCount = threadCount;
+    }
+
     /**
      * 添加请求对象
      * @param bitmapRequest
@@ -58,7 +62,17 @@ public class RequestQueue {
      * 开始请求
      */
     public void start() {
+        stop();
+        startDispachers();
+    }
 
+    private void startDispachers() {
+        mDispatcher = new RequestDispatcher[threadCount];
+        for (int i = 0; i < threadCount; i++) {
+            RequestDispatcher dispatcher = new RequestDispatcher(mBitmapRequestQueue);
+            mDispatcher[i] =dispatcher;
+            mDispatcher[i].start();
+        }
     }
 
     /**

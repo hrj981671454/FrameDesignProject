@@ -9,9 +9,9 @@ import kotlin.studio.com.myapplication.imageload.request.BitmapRequest;
  * Copyright  : Copyright (c) 2016
  * Company    : Android
  * Author     : 关羽
- * Date       : 2018-07-31 14:25
+ * Date       : 2018/8/5 22:08
  */
-public class UrlLoader extends AbstarctLoader {
+public class NullLoader extends AbstarctLoader {
     @Override
     protected Bitmap onLoad(BitmapRequest request) {
         return null;

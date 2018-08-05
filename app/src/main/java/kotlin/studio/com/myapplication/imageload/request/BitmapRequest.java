@@ -99,4 +99,25 @@ public class BitmapRequest implements Comparator<BitmapRequest> {
         result = 31 * result + seriaNo;
         return result;
     }
+
+    public ImageView getImageView() {
+        return imageViewSoftReference.get();
+    }
+
+
+    public String getImageUrl() {
+        return ImageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        ImageUrl = imageUrl;
+    }
+
+    public String getImageUriMD5() {
+        return imageUriMD5;
+    }
+
+    public void setImageUriMD5(String imageUriMD5) {
+        this.imageUriMD5 = imageUriMD5;
+    }
 }
