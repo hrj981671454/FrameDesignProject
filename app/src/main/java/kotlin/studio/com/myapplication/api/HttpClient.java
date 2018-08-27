@@ -1,4 +1,4 @@
-package kotlin.studio.com.myapplication.http;
+package kotlin.studio.com.myapplication.api;
 
 import android.content.Context;
 

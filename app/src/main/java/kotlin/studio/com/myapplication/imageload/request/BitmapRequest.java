@@ -3,121 +3,98 @@ package kotlin.studio.com.myapplication.imageload.request;
 import android.widget.ImageView;
 
 import java.lang.ref.SoftReference;
-import java.util.Comparator;
 
 import kotlin.studio.com.myapplication.imageload.config.DisplayConfig;
-import kotlin.studio.com.myapplication.imageload.loader.SimpleImageLoader;
+import kotlin.studio.com.myapplication.imageload.core.SimpleImageLoader;
 import kotlin.studio.com.myapplication.imageload.policy.LoadPolicy;
+import kotlin.studio.com.myapplication.imageload.utils.MD5Utils;
 
-/**
- * Description:
- * Copyright  : Copyright (c) 2016
- * Company    : Android
- * Author     : 关羽
- * Date       : 2018-07-31 14:23
- */
-public class BitmapRequest implements Comparator<BitmapRequest> {
-
-    /**
-     * 加载策略
-     */
+public class BitmapRequest implements Comparable<BitmapRequest> {
+    //加载策略
     private LoadPolicy loadPolicy = SimpleImageLoader.getInstance().getConfig().getLoadPolicy();
+    //序列号
+    private int serialNO;
 
-    /**
-     * 优先级编号
-     */
-    private int seriaNo;
+    //图片控件
+    //当系统内存不足时，把引用的对象进行回收
+    private SoftReference<ImageView> mimageViewRef;
+    //图片路径
+    private Object                   imageUri;
+    //MD5的图片路径
+    private String                   imageUriMD5;
 
+    private DisplayConfig displayConfig = SimpleImageLoader.getInstance().getConfig().getDisplayConfig();
+    public SimpleImageLoader.ImageListener imageListener;
 
-    /**
-     * 持有ImageView的软引用
-     */
-    private SoftReference<ImageView> imageViewSoftReference;
-
-
-    /**
-     * 图片路径
-     */
-    private String ImageUrl;
-
-
-    /**
-     * 名字合法化
-     */
-    private String imageUriMD5;
-
-
-    /**
-     * 下载完成监听
-     */
-    private SimpleImageLoader.ImageListener imageListener;
-
-    private DisplayConfig displayConfig;
-
-
-    public BitmapRequest(ImageView imageView, String imageUrl, DisplayConfig displayConfig, SimpleImageLoader.ImageListener imageListener) {
-        this.imageViewSoftReference = new SoftReference<>(imageView);
-        this.ImageUrl = imageUrl;
-        this.imageListener = imageListener;
-        imageView.setTag(imageUrl);
-        if (null != displayConfig) {
-            this.displayConfig = displayConfig;
+    public BitmapRequest(ImageView imageView, Object uri, DisplayConfig config, SimpleImageLoader.ImageListener imageListener) {
+        this.mimageViewRef = new SoftReference<ImageView>(imageView);
+        //设置可见的ImageView的tag为，要下载的图片路径
+        imageView.setTag(uri);
+        this.imageUri = uri;
+        this.imageUriMD5 = MD5Utils.toMD5(imageUri.toString());
+        if (config != null) {
+            this.displayConfig = config;
         }
+        this.imageListener = imageListener;
     }
 
     @Override
-    public int compare(BitmapRequest bitmapRequest, BitmapRequest t1) {
-        return loadPolicy.compareTo(bitmapRequest, t1);
+    public int compareTo(BitmapRequest another) {
+        return loadPolicy.compareTo(this, another);
     }
 
-
-    public int getSeriaNo() {
-        return seriaNo;
+    /**
+     * 设置序列号
+     * @param serialNO
+     */
+    public void setSerialNO(int serialNO) {
+        this.serialNO = serialNO;
     }
 
-    public void setSeriaNo(int seriaNo) {
-        this.seriaNo = seriaNo;
+    public int getSerialNO() {
+        return serialNO;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+    public ImageView getImageView() {
+        return mimageViewRef.get();
+    }
 
-        BitmapRequest that = (BitmapRequest) o;
-
-        if (seriaNo != that.seriaNo)
-            return false;
-        return loadPolicy != null ? loadPolicy.equals(that.loadPolicy) : that.loadPolicy == null;
+    public String getImageUri() {
+        return imageUri.toString();
     }
 
     @Override
     public int hashCode() {
-        int result = loadPolicy != null ? loadPolicy.hashCode() : 0;
-        result = 31 * result + seriaNo;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((loadPolicy == null) ? 0 : loadPolicy.hashCode());
+        result = prime * result + serialNO;
         return result;
     }
 
-    public ImageView getImageView() {
-        return imageViewSoftReference.get();
-    }
 
-
-    public String getImageUrl() {
-        return ImageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        ImageUrl = imageUrl;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BitmapRequest other = (BitmapRequest) obj;
+        if (loadPolicy == null) {
+            if (other.loadPolicy != null)
+                return false;
+        } else if (!loadPolicy.equals(other.loadPolicy))
+            return false;
+        if (serialNO != other.serialNO)
+            return false;
+        return true;
     }
 
     public String getImageUriMD5() {
         return imageUriMD5;
     }
 
-    public void setImageUriMD5(String imageUriMD5) {
-        this.imageUriMD5 = imageUriMD5;
-    }
+
 }

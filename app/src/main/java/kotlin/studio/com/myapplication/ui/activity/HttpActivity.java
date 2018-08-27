@@ -1,4 +1,4 @@
-package kotlin.studio.com.myapplication.activity;
+package kotlin.studio.com.myapplication.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

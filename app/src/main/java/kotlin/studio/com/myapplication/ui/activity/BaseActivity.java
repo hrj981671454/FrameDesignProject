@@ -1,4 +1,4 @@
-package kotlin.studio.com.myapplication.activity;
+package kotlin.studio.com.myapplication.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import kotlin.studio.com.myapplication.inject.ViewInjectUtils;
  * Author     : 关羽
  * Date       : 2018-07-17 14:38
  */
-public class BaseActivity extends Activity {
+public abstract class BaseActivity<T> extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,4 +22,11 @@ public class BaseActivity extends Activity {
     }
 
 
+    /**
+     * 加载数据
+     */
+//    protected abstract void initData();
+
+
+//    protected abstract T createPresenter();
 }

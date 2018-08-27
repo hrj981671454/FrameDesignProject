@@ -3,40 +3,44 @@ package kotlin.studio.com.myapplication.imageload.loader;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Description:
- * Copyright  : Copyright (c) 2016
- * Company    : Android
- * Author     : 关羽
- * Date       : 2018/8/5 22:09
- */
 public class LoaderManager {
 
+	private static LoaderManager       mInstance  = new LoaderManager();
+	//加载器管理容器
+	private        Map<String, Loader> mLoaderMap = new HashMap<String, Loader>();
 
-    private Map<String, Loader> mLoaderMap = new HashMap<>();
+	private NullLoader mNullLoader = new NullLoader();
 
-    private static LoaderManager instance = new LoaderManager();
+	private LoaderManager() {
+		register("http", new UrlLoader());
+		register("https", new UrlLoader());
+		register("file", new LocalLoader());
+	}
 
+	public static LoaderManager getInstance(){
+		return mInstance;
+	}
 
-    public static LoaderManager getInstance() {
-        return instance;
-    }
-
-    public LoaderManager() {
-        register("http", new UrlLoader());
-        register("https", new UrlLoader());
-        register("file", new LocalLoader());
-    }
-
-    private void register(String http, Loader urlLoader) {
-        mLoaderMap.put(http, urlLoader);
-    }
-
-
-    public Loader getLoader(String schema) {
-        if (mLoaderMap.containsKey(schema)) {
-            return mLoaderMap.get(schema);
-        }
-        return new NullLoader();
-    }
+	/**
+	 * 根据图片地址的协议获取特定的图片加载器
+	 * @param schema
+	 * @return
+	 */
+	public Loader getLoader(String schema){
+		if(mLoaderMap.containsKey(schema)){
+			return mLoaderMap.get(schema);
+		}
+		//没有找到合适的，返回空加载器
+		return mNullLoader;
+	}
+	
+	/**
+	 * 注册加载器，可以支持系统中未来出现的其他协议的加载器
+	 * @param schema
+	 * @param loader
+	 */
+	public final void register(String schema,Loader loader){
+		mLoaderMap.put(schema, loader);
+	}
+	
 }

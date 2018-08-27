@@ -1,19 +1,24 @@
 package kotlin.studio.com.myapplication.imageload.loader;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import kotlin.studio.com.myapplication.imageload.request.BitmapRequest;
 
+
 /**
- * Description:
- * Copyright  : Copyright (c) 2016
- * Company    : Android
- * Author     : 关羽
- * Date       : 2018/8/5 22:08
+ * “空”加载器
+ * @author Jason
+ * QQ: 1476949583
+ * @date 2016年3月11日
+ * @version 1.0
  */
-public class NullLoader extends AbstarctLoader {
-    @Override
-    protected Bitmap onLoad(BitmapRequest request) {
-        return null;
-    }
+public class NullLoader extends AbstractLoader {
+
+	@Override
+	protected Bitmap onLoad(BitmapRequest request) {
+		Log.e("jason", "图片无法记载!");
+		return null;
+	}
+
 }

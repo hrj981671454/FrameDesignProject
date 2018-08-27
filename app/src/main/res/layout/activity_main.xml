@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.BaseActivity">
+    tools:context=".ui.activity.BaseActivity">
 
     <Button
         android:id="@+id/text_ioc"
@@ -44,7 +44,7 @@
         android:id="@+id/text_ioc4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="删除"
+        android:text="图片加载器"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

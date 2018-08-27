@@ -1,4 +1,4 @@
-package kotlin.studio.com.myapplication.activity;
+package kotlin.studio.com.myapplication.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +26,6 @@ import kotlin.studio.com.myapplication.inject.ViewInject;
 import kotlin.studio.com.myapplication.sql.bean.LoginInfo;
 import kotlin.studio.com.myapplication.sql.dao.LoginInfoDao;
 import kotlin.studio.com.myapplication.sql.factory.DaoManagerFactory;
-import kotlin.studio.com.myapplication.utils.LogsUtils;
 
 /**
  * Description:
@@ -127,9 +126,10 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.text_ioc4)
     public void click4(View view) {
-        LoginInfo loginInfo = new LoginInfo();
+        /*LoginInfo loginInfo = new LoginInfo();
         boolean b = mDao.deleteAll(loginInfo);
-        LogsUtils.logI(getClass(), b + "");
+        LogsUtils.logI(getClass(), b + "");*/
+        startActivity(new Intent(this, ImageActivity.class));
     }
 
 
