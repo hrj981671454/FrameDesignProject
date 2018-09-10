@@ -7,7 +7,11 @@ import java.lang.reflect.Proxy
 import java.util.*
 
 /**
- * Collection of helper methods for calling methods and accessing fields reflectively.
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 object YAJReflectionHelpers {
     private val PRIMITIVE_RETURN_VALUES = Collections.unmodifiableMap(object : HashMap<String, Any>() {

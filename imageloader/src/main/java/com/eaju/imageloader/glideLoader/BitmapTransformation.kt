@@ -13,6 +13,13 @@ import com.bumptech.glide.util.Util
 
 import java.security.MessageDigest
 
+/**
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
+ */
 abstract class BitmapTransformation : Transformation<Bitmap> {
 
     abstract fun key(): String

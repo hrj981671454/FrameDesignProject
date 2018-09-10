@@ -18,9 +18,13 @@ import com.shuyu.gsyimageloader.YAJImageLoader
 import com.shuyu.gsyimageloader.YAJLoadOption
 import java.io.File
 
+
 /**
- * Fresco 图片加载
- * Created by guoshuyu on 2018/1/19.
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 class YAJFrescoImageLoader(private val context: Context, private var config: ImagePipelineConfig? = null) : YAJImageLoader, YAJFrescoFactory {
 

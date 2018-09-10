@@ -14,10 +14,12 @@ import com.squareup.picasso.Target
 import java.io.File
 import java.io.IOException
 import java.lang.IllegalStateException
-
 /**
- * Picasso图片加载
- * Created by guoshuyu on 2018/1/19.
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 class YAJPicassoImageLoader(private val context: Context, builder: Picasso.Builder? = null) : YAJImageLoader {
 

@@ -9,8 +9,13 @@ import android.renderscript.RSRuntimeException
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 
+
 /**
- * https://github.com/wasabeef/glide-transformations
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 class BlurTransformation @JvmOverloads constructor(private val radius: Int = MAX_RADIUS, private val sampling: Int = DEFAULT_DOWN_SAMPLING) : BitmapTransformation() {
 

@@ -17,9 +17,13 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.shuyu.gsyimageloader.YAJImageLoader
 import com.shuyu.gsyimageloader.YAJLoadOption
 
+
 /**
- * Fresco 基础
- * Created by guoshuyu on 2018/1/19.
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 interface YAJFrescoFactory {
 

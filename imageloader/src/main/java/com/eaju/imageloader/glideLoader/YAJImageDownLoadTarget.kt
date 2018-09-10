@@ -5,10 +5,12 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.shuyu.gsyimageloader.YAJImageLoader
 import java.io.File
-
 /**
- * Glide 图片下载对象
- * Created by guoshuyu on 2018/1/18.
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 class YAJImageDownLoadTarget constructor(private val mCallback: YAJImageLoader.Callback?) : SimpleTarget<File>() {
 

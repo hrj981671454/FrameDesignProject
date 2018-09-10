@@ -4,8 +4,11 @@ import android.graphics.*
 import com.squareup.picasso.Transformation
 
 /**
- * Created by guoshuyu on 2018/1/22.
- * https://github.com/wasabeef/picasso-transformations
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 class ColorFilterTransformations(private val mColor: Int) : Transformation {
 

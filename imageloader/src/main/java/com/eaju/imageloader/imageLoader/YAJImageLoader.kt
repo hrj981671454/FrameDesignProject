@@ -6,8 +6,11 @@ import android.support.annotation.UiThread
 import java.io.File
 
 /**
- * 图片加载接口
- * Created by guoshuyu on 2018/1/18.
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 interface YAJImageLoader {
 

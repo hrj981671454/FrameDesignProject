@@ -2,6 +2,13 @@ package com.example.gysimageloader.process.glide
 
 import android.graphics.Bitmap
 
+/**
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
+ */
 object FastBlur {
 
     fun blur(sentBitmap: Bitmap, radius: Int, canReuseInBitmap: Boolean): Bitmap? {

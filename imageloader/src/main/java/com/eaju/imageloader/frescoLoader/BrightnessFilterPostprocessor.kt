@@ -7,8 +7,13 @@ import com.facebook.cache.common.SimpleCacheKey
 
 import jp.co.cyberagent.android.gpuimage.GPUImageBrightnessFilter
 
+
 /**
- * https://github.com/wasabeef/fresco-processors
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 class BrightnessFilterPostprocessor @JvmOverloads constructor(context: Context, private val brightness: Float = 0.0f) : GPUFilterPostprocessor(context, GPUImageBrightnessFilter()) {
 

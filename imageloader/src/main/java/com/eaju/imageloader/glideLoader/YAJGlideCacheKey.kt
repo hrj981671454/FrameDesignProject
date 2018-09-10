@@ -3,9 +3,13 @@ package com.shuyu.gsygiideloader
 import com.bumptech.glide.load.Key
 import java.security.MessageDigest
 
+
 /**
- * Glide原图缓存Key
- * Created by guoshuyu on 2018/1/22.
+ * Description:
+ * Copyright  : Copyright (c) 2016
+ * Company    : Android
+ * Author     : 关羽
+ * Date       : 2018-07-31 14:34
  */
 class YAJGlideCacheKey constructor(private val id: String, private val signature: Key) : Key {
 
