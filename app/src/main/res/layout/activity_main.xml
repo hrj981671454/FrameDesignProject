@@ -12,54 +12,34 @@
         android:id="@+id/text_ioc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="插入"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="插入"/>
 
 
     <Button
         android:id="@+id/text_ioc2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="更新"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="更新"/>
 
 
     <Button
         android:id="@+id/text_ioc3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="查询"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="查询"/>
 
     <Button
         android:id="@+id/text_ioc4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="图片加载器"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="图片加载器"/>
 
 
     <Button
         android:id="@+id/text_ioc6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="网络请求"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="网络请求"/>
 
     <ListView
         android:id="@+id/lvList"

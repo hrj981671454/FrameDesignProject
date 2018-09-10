@@ -4,11 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
+import com.eaju.imageloader.imageLoader.cache.DoubleCache;
+import com.eaju.imageloader.imageLoader.config.ImageLoaderConfig;
+import com.eaju.imageloader.imageLoader.core.SimpleImageLoader;
+import com.eaju.imageloader.imageLoader.policy.ReversePolicy;
+import com.shuyu.gsygiideloader.YAJGlideImageLoader;
+
 import kotlin.studio.com.myapplication.R;
-import kotlin.studio.com.myapplication.imageload.cache.DoubleCache;
-import kotlin.studio.com.myapplication.imageload.config.ImageLoaderConfig;
-import kotlin.studio.com.myapplication.imageload.core.SimpleImageLoader;
-import kotlin.studio.com.myapplication.imageload.policy.ReversePolicy;
 
 /**
  * Description:
@@ -20,8 +22,13 @@ import kotlin.studio.com.myapplication.imageload.policy.ReversePolicy;
 public class App extends Application {
     private static App     instance;
     private static Context context;
-    private final String dataBasePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/com.eaju.main/database/";
-    private final String logPath      = Environment.getExternalStorageDirectory().getAbsolutePath() + "/com.eaju.main/log/";
+    private final String dataBasePath   = Environment.getExternalStorageDirectory().getAbsolutePath() + "/com.eaju.main/database/";
+    private final String logPath        = Environment.getExternalStorageDirectory().getAbsolutePath() + "/com.eaju.main/log/";
+    private final String imageCachePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/com.eaju.main/image/";
+
+    public String getImageCachePath() {
+        return imageCachePath;
+    }
 
     public SimpleImageLoader getImageLoader() {
         return imageLoader;
@@ -54,12 +61,15 @@ public class App extends Application {
     }
 
     private void initImageLoader() {
-        ImageLoaderConfig.Builder build = new ImageLoaderConfig.Builder();
+        ImageLoaderConfig.Builder build = new ImageLoaderConfig.Builder(this);
         build.setThreadCount(3) //线程数量
                 .setLoadPolicy(new ReversePolicy()) //加载策略
                 .setCachePolicy(new DoubleCache(this)) //缓存策略
                 .setLoadingPlaceHolder(R.mipmap.ic_launcher)
-                .setFailedPlaceHolder(R.mipmap.ic_launcher);
+                .setFailedPlaceHolder(R.mipmap.ic_launcher)
+                .setImageCachePath(getImageCachePath())
+                .setImageCacheSize(50 * 1024 * 1024)
+                .setImageLoader(new YAJGlideImageLoader(this));
 
         ImageLoaderConfig config = build.build();
         //初始化

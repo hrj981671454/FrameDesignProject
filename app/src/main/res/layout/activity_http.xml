@@ -12,22 +12,14 @@
         android:id="@+id/text_ioc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登陆请求"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="登陆请求"/>
 
 
     <Button
         android:id="@+id/text_ioc3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="数据库升级"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:text="数据库升级"/>
 
     <TextView
         android:id="@+id/tvResult"

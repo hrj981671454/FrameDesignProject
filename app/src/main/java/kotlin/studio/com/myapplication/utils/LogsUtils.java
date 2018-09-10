@@ -22,5 +22,8 @@ public class LogsUtils {
         Log.e(simpleName, logs);
     }
 
+    public static void logI(String tag, String logs) {
+        Log.i(tag, logs);
+    }
 
 }

@@ -1,16 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfiguration.androidCompileSdkVersion
     defaultConfig {
         applicationId "kotlin.studio.com.myapplication"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion globalConfiguration.androidMinSdkVersion
+        targetSdkVersion globalConfiguration.androidTargetSdkVersion
         versionCode 1
         versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
+        }
+        javaCompileOptions {
+            annotationProcessorOptions.includeCompileClasspath = true
         }
     }
     buildTypes {
@@ -24,15 +27,22 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    buildToolsVersion '27.0.3'
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    mavenCentral()
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.alibaba:fastjson:1.2.23'
     implementation 'com.yanzhenjie:permission:+'
     implementation 'com.lzy.net:okgo:3.0.4'
+//    implementation (ext: 'aar', name: 'imageloader')
+    implementation project(':imageloader')
+    implementation androidDependencies.appcompat_v7
 }

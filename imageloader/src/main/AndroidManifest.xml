@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.eaju.imageloader">
+
+    <application>
+        <meta-data
+            android:name="com.eaju.imageloader.glideLoader.GlideCache"
+            android:value="GlideModule"/>
+    </application>
+
+</manifest>
