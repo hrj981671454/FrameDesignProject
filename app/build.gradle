@@ -45,4 +45,5 @@ dependencies {
 //    implementation (ext: 'aar', name: 'imageloader')
     implementation project(':imageloader')
     implementation androidDependencies.appcompat_v7
+//    implementation 'com.github.hrj981671454:FrameDesignProject:1.0.0'
 }
