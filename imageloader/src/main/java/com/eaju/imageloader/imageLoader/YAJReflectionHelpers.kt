@@ -1,4 +1,4 @@
-package com.shuyu.gsyimageloader
+package com.eaju.imageloader.imageLoader
 
 import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException

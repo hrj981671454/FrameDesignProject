@@ -1,4 +1,4 @@
-package com.example.gysimageloader.process.glide
+package com.eaju.imageloader.glideLoader
 
 import android.graphics.Bitmap
 

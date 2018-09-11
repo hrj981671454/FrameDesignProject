@@ -1,4 +1,4 @@
-package com.shuyu.gsygiideloader
+package com.eaju.imageloader.glideLoader
 
 import com.bumptech.glide.load.Key
 import java.security.MessageDigest

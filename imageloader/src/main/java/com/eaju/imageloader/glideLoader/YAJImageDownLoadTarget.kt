@@ -1,9 +1,9 @@
-package com.shuyu.gsygiideloader
+package com.eaju.imageloader.glideLoader
 
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.shuyu.gsyimageloader.YAJImageLoader
+import com.eaju.imageloader.imageLoader.YAJImageLoader
 import java.io.File
 /**
  * Description:

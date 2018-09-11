@@ -4,14 +4,14 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import com.eaju.imageloader.frescoLoader.BrightnessFilterPostprocessor
+import com.eaju.imageloader.frescoLoader.YAJFrescoImageLoader
+import com.eaju.imageloader.glideLoader.BlurTransformation
+import com.eaju.imageloader.glideLoader.YAJGlideImageLoader
+import com.eaju.imageloader.imageLoader.YAJImageLoader
+import com.eaju.imageloader.imageLoader.YAJImageLoaderManager
+import com.eaju.imageloader.imageLoader.YAJLoadOption
 import com.eaju.imageloader.picassoLoader.ColorFilterTransformations
 import com.eaju.imageloader.picassoLoader.YAJPicassoImageLoader
-import com.example.gysimageloader.process.glide.BlurTransformation
-import com.shuyu.gsyfrescoimageloader.YAJFrescoImageLoader
-import com.shuyu.gsygiideloader.YAJGlideImageLoader
-import com.shuyu.gsyimageloader.YAJImageLoader
-import com.shuyu.gsyimageloader.YAJImageLoaderManager
-import com.shuyu.gsyimageloader.YAJLoadOption
 import kotlin.properties.Delegates
 
 /**
@@ -123,25 +123,5 @@ class ImageLoader {
                 .setErrorImg(ErrorImg).setSize(size).setPlayGif(isPlayGif!!)
                 .setCircle(isCircle!!)
         return transformations
-    }
-
-    /**
-     * 获取图片处理
-     */
-    private fun getProcess(context: Context): Any? {
-        var sLoader: YAJImageLoader by Delegates.notNull()
-        var process: Any? = null
-        when (sLoader) {
-            is YAJFrescoImageLoader -> {
-                process = BrightnessFilterPostprocessor(context, -0.8f)
-            }
-            is YAJGlideImageLoader -> {
-                process = BlurTransformation()
-            }
-            is YAJPicassoImageLoader -> {
-                process = ColorFilterTransformations(Color.GREEN)
-            }
-        }
-        return process
     }
 }

@@ -7,14 +7,14 @@ import android.widget.ImageView;
 
 import com.eaju.imageloader.ImageLoader;
 import com.eaju.imageloader.LoadImageCallback;
+import com.eaju.imageloader.frescoLoader.YAJFrescoImageLoader;
+import com.eaju.imageloader.glideLoader.YAJGlideImageLoader;
+import com.eaju.imageloader.imageLoader.YAJImageLoader;
 import com.eaju.imageloader.myLoader.config.DisplayConfig;
 import com.eaju.imageloader.myLoader.config.ImageLoaderConfig;
 import com.eaju.imageloader.myLoader.request.BitmapRequest;
 import com.eaju.imageloader.myLoader.request.RequestQueue;
 import com.eaju.imageloader.picassoLoader.YAJPicassoImageLoader;
-import com.shuyu.gsyfrescoimageloader.YAJFrescoImageLoader;
-import com.shuyu.gsygiideloader.YAJGlideImageLoader;
-import com.shuyu.gsyimageloader.YAJImageLoader;
 
 import org.jetbrains.annotations.Nullable;
 

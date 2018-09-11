@@ -6,9 +6,9 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
-import com.shuyu.gsyimageloader.YAJImageLoader
-import com.shuyu.gsyimageloader.YAJLoadOption
-import com.shuyu.gsyimageloader.YAJReflectionHelpers
+import com.eaju.imageloader.imageLoader.YAJImageLoader
+import com.eaju.imageloader.imageLoader.YAJLoadOption
+import com.eaju.imageloader.imageLoader.YAJReflectionHelpers
 import com.squareup.picasso.*
 import com.squareup.picasso.Target
 import java.io.File

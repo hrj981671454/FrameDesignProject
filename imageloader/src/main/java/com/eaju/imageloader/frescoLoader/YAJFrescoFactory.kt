@@ -1,8 +1,10 @@
-package com.shuyu.gsyfrescoimageloader
+package com.eaju.imageloader.frescoLoader
 
 import android.content.Context
 import android.graphics.drawable.Animatable
 import android.net.Uri
+import com.eaju.imageloader.imageLoader.YAJImageLoader
+import com.eaju.imageloader.imageLoader.YAJLoadOption
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.controller.ControllerListener
 import com.facebook.drawee.generic.RoundingParams
@@ -14,8 +16,6 @@ import com.facebook.imagepipeline.core.ImagePipelineFactory
 import com.facebook.imagepipeline.request.BasePostprocessor
 import com.facebook.imagepipeline.request.ImageRequest
 import com.facebook.imagepipeline.request.ImageRequestBuilder
-import com.shuyu.gsyimageloader.YAJImageLoader
-import com.shuyu.gsyimageloader.YAJLoadOption
 
 
 /**

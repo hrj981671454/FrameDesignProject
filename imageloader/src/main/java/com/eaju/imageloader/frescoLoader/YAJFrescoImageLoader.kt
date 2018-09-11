@@ -1,7 +1,10 @@
-package com.shuyu.gsyfrescoimageloader
+package com.eaju.imageloader.frescoLoader
 
 import android.content.Context
 import android.graphics.Bitmap
+import com.eaju.imageloader.imageLoader.YAJImageConst
+import com.eaju.imageloader.imageLoader.YAJImageLoader
+import com.eaju.imageloader.imageLoader.YAJLoadOption
 import com.facebook.binaryresource.FileBinaryResource
 import com.facebook.common.executors.CallerThreadExecutor
 import com.facebook.datasource.BaseDataSubscriber
@@ -13,9 +16,6 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.facebook.imagepipeline.core.ImagePipelineFactory
 import com.facebook.imagepipeline.image.CloseableBitmap
 import com.facebook.imagepipeline.request.ImageRequest
-import com.shuyu.gsyimageloader.YAJImageConst
-import com.shuyu.gsyimageloader.YAJImageLoader
-import com.shuyu.gsyimageloader.YAJLoadOption
 import java.io.File
 
 

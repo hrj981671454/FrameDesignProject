@@ -4,11 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
+import com.eaju.imageloader.glideLoader.YAJGlideImageLoader;
 import com.eaju.imageloader.myLoader.cache.DoubleCache;
 import com.eaju.imageloader.myLoader.config.ImageLoaderConfig;
 import com.eaju.imageloader.myLoader.core.SimpleImageLoader;
 import com.eaju.imageloader.myLoader.policy.ReversePolicy;
-import com.shuyu.gsygiideloader.YAJGlideImageLoader;
 
 import kotlin.studio.com.myapplication.R;
 

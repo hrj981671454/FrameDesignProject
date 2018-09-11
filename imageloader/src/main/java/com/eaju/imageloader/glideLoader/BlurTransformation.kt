@@ -1,4 +1,4 @@
-package com.example.gysimageloader.process.glide
+package com.eaju.imageloader.glideLoader
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Build
 import android.renderscript.RSRuntimeException
-
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 
 

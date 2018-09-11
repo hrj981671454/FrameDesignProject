@@ -24,6 +24,6 @@ class BrightnessFilterPostprocessor @JvmOverloads constructor(context: Context, 
     }
 
     override fun getPostprocessorCacheKey(): CacheKey? {
-        return SimpleCacheKey("brightness=" + brightness)
+        return SimpleCacheKey("brightness=" + brightness) as CacheKey?
     }
 }

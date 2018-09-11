@@ -1,4 +1,4 @@
-package com.shuyu.gsygiideloader
+package com.eaju.imageloader.glideLoader
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -16,10 +16,10 @@ import com.bumptech.glide.load.engine.cache.MemoryCache
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.signature.EmptySignature
-import com.shuyu.gsyimageloader.YAJImageConst
-import com.shuyu.gsyimageloader.YAJImageLoader
-import com.shuyu.gsyimageloader.YAJLoadOption
-import com.shuyu.gsyimageloader.YAJReflectionHelpers
+import com.eaju.imageloader.imageLoader.YAJImageConst
+import com.eaju.imageloader.imageLoader.YAJImageLoader
+import com.eaju.imageloader.imageLoader.YAJLoadOption
+import com.eaju.imageloader.imageLoader.YAJReflectionHelpers
 import java.io.File
 import java.lang.IllegalStateException
 

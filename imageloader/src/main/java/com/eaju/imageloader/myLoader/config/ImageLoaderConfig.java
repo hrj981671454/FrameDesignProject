@@ -4,13 +4,13 @@ package com.eaju.imageloader.myLoader.config;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.eaju.imageloader.imageLoader.YAJImageLoader;
+import com.eaju.imageloader.imageLoader.YAJImageLoaderManager;
 import com.eaju.imageloader.myLoader.cache.BitmapCache;
 import com.eaju.imageloader.myLoader.cache.NoCache;
 import com.eaju.imageloader.myLoader.policy.LoadPolicy;
 import com.eaju.imageloader.myLoader.policy.SerialPolicy;
 import com.eaju.imageloader.myLoader.utils.CommonUtil;
-import com.shuyu.gsyimageloader.YAJImageLoader;
-import com.shuyu.gsyimageloader.YAJImageLoaderManager;
 
 /**
  * Description: 配置
