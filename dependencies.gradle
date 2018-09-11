@@ -1,0 +1,61 @@
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.google.com' }
+        google()
+    }
+}
+
+ext {
+    //Android
+    androidBuildToolsVersion = "27.0.3"
+    androidMinSdkVersion = 14
+    androidTargetSdkVersion = 27
+    androidCompileSdkVersion = 27
+    supportLibraryVersion = '26.1.0'
+
+    anko_version = '0.8.2'
+
+    //ViewLibraries
+    butterKnifeVersion = '8.8.1'
+    scaleImage = '3.9.0'
+
+    //dataDependencies
+    frescoVersion = '1.10.0'
+    frescoPhoto = "1.1.3"
+    gpuImage = '1.3.0'
+    glideVersion = '4.8.0'
+    okhttpVersion = '3.11.0'
+    picassoVersion = '2.5.2'
+    universalVersion = '1.9.5'
+
+    gsyImageLoaderVersion = 'v1.0.1'
+
+    androidDependencies = [
+            recyclerView: "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+            appcompat_v7: "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            cardview_v7 : "com.android.support:cardview-v7:${supportLibraryVersion}",
+            support_v4  : "com.android.support:support-v4:${supportLibraryVersion}",
+            design      : "com.android.support:design:${supportLibraryVersion}",
+            kotlinAnko  : "org.jetbrains.anko:anko-common:$anko_version",
+    ]
+
+    viewDependencies = [
+            butterKnife    : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            apt_butterKnife: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+            scaleImage     : "com.davemorrissey.labs:subsampling-scale-image-view:${scaleImage}",
+    ]
+
+    dataDependencies = [
+            fresco              : "com.facebook.fresco:fresco:${frescoVersion}",
+            frescoGif           : "com.facebook.fresco:animated-gif:${frescoVersion}",
+            frescoPhoto         : "me.relex:photodraweeview:${frescoPhoto}",
+            gpuImage            : "jp.co.cyberagent.android.gpuimage:gpuimage-library:${gpuImage}",
+            glide               : "com.github.bumptech.glide:glide:$glideVersion",
+            glideIntegration    : "com.github.bumptech.glide:okhttp3-integration:$glideVersion",
+            okhttp3             : "com.squareup.okhttp3:okhttp:$okhttpVersion",
+            picasso             : "com.squareup.picasso:picasso:$picassoVersion",
+            universalimageloader: "com.nostra13.universalimageloader:universal-image-loader:$universalVersion",
+    ]
+}

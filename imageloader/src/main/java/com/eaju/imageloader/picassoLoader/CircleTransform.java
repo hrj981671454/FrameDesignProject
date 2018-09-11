@@ -3,7 +3,7 @@ package com.eaju.imageloader.picassoLoader;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.eaju.imageloader.imageLoader.utils.BitmapDecoder;
+import com.eaju.imageloader.myLoader.utils.BitmapDecoder;
 import com.squareup.picasso.Transformation;
 
 class CircleTransform implements Transformation {

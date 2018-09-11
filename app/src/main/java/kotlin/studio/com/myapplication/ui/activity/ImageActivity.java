@@ -10,8 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.eaju.imageloader.imageLoader.config.DisplayConfig;
-import com.eaju.imageloader.imageLoader.core.SimpleImageLoader;
+import com.eaju.imageloader.myLoader.config.DisplayConfig;
+import com.eaju.imageloader.myLoader.core.SimpleImageLoader;
 
 import kotlin.studio.com.myapplication.R;
 import kotlin.studio.com.myapplication.app.App;
