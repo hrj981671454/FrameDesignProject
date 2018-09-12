@@ -3,7 +3,6 @@ package com.eaju.imageloader.picassoLoader;
 import android.content.Context;
 
 import com.eaju.imageloader.myLoader.core.SimpleImageLoader;
-import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

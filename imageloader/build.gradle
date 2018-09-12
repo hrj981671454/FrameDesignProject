@@ -62,6 +62,6 @@ dependencies {
     api dataDependencies.glideIntegration
     api dataDependencies.fresco
     api dataDependencies.frescoGif
-    api dataDependencies.picassoDownload
+    api dataDependencies.okhttp3
     implementation dataDependencies.gpuImage
 }
