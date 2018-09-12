@@ -69,11 +69,12 @@ public class App extends Application {
                 .setLoadingPlaceHolder(R.mipmap.ic_launcher)
                 .setFailedPlaceHolder(R.mipmap.ic_launcher)
                 .setImageCachePath(getImageCachePath())
-                .setImageCacheSize(50 * 1024 * 1024)
-                .setImageLoader(new YAJGlideImageLoader(this));
-
+                .setImageCacheSize(50 * 1024 * 1024);
         ImageLoaderConfig config = build.build();
         //初始化
         imageLoader = SimpleImageLoader.getInstance(config);
+//        config.setImageLoader(new YAJFrescoImageLoader(this, null));
+//        config.setImageLoader(new YAJPicassoImageLoader(this, null));
+        config.setImageLoader(new YAJGlideImageLoader(this));
     }
 }

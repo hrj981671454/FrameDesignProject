@@ -3,6 +3,7 @@ package com.eaju.imageloader.myLoader.core;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.eaju.imageloader.ImageLoader;
@@ -39,6 +40,7 @@ public class SimpleImageLoader {
     //单例对象
     private static volatile SimpleImageLoader mInstance;
 
+
     private SimpleImageLoader() {
 
     }
@@ -73,7 +75,8 @@ public class SimpleImageLoader {
      */
     public static SimpleImageLoader getInstance() {
         if (mInstance == null) {
-            throw new UnsupportedOperationException("没有初始化");
+            Log.e("SimpleImageLoader", "没有初始化");
+            return null;
         }
         return mInstance;
     }
@@ -150,7 +153,7 @@ public class SimpleImageLoader {
                         });
     }
 
-    public static interface ImageListener {
+    public interface ImageListener {
         /**
          * @param imageView
          * @param bitmap

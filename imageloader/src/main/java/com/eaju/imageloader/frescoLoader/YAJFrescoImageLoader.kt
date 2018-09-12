@@ -5,7 +5,9 @@ import android.graphics.Bitmap
 import com.eaju.imageloader.imageLoader.YAJImageConst
 import com.eaju.imageloader.imageLoader.YAJImageLoader
 import com.eaju.imageloader.imageLoader.YAJLoadOption
+import com.eaju.imageloader.myLoader.core.SimpleImageLoader
 import com.facebook.binaryresource.FileBinaryResource
+import com.facebook.cache.disk.DiskCacheConfig
 import com.facebook.common.executors.CallerThreadExecutor
 import com.facebook.datasource.BaseDataSubscriber
 import com.facebook.datasource.DataSource
@@ -30,8 +32,13 @@ class YAJFrescoImageLoader(private val context: Context, private var config: Ima
 
     init {
         if (config == null) {
+            var diskCacheConfig = DiskCacheConfig.newBuilder(context)
+                    .setBaseDirectoryPath(File(SimpleImageLoader.getInstance().config.imageCachePath))
+                    .setMaxCacheSize(SimpleImageLoader.getInstance().config.maxCacheSize)
+                    .build();
             config = ImagePipelineConfig.newBuilder(context.applicationContext)
                     .setDownsampleEnabled(true)
+                    .setMainDiskCacheConfig(diskCacheConfig)
                     .build()
         }
         Fresco.initialize(context.applicationContext, config)

@@ -14,6 +14,7 @@ import com.squareup.picasso.Target
 import java.io.File
 import java.io.IOException
 import java.lang.IllegalStateException
+
 /**
  * Description:
  * Copyright  : Copyright (c) 2016
@@ -27,7 +28,8 @@ class YAJPicassoImageLoader(private val context: Context, builder: Picasso.Build
     private var mPicassoLoader: Picasso = if (builder != null) {
         builder.build()
     } else {
-        Picasso.with(context)
+//        Picasso.with(context)
+        PicassoInit.getInstance(context).initPicasso()
     }
 
     override fun loadImage(loadOption: YAJLoadOption, target: Any?, callback: YAJImageLoader.Callback?, extendOption: YAJImageLoader.ExtendedOptions?) {

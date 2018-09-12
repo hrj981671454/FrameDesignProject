@@ -128,15 +128,6 @@ public class ImageLoaderConfig {
             return this;
         }
 
-        /**
-         * 设置第三方图片加载框架
-         * @return
-         */
-        public Builder setImageLoader(YAJImageLoader imageLoader) {
-            YAJImageLoaderManager.Companion.initialize(imageLoader);
-            config.imageLoader = imageLoader;
-            return this;
-        }
 
         public ImageLoaderConfig build() {
             return config;
@@ -169,5 +160,13 @@ public class ImageLoaderConfig {
 
     public YAJImageLoader getImageLoader() {
         return imageLoader;
+    }
+
+    /**
+     * 设置第三方图片加载框架
+     * @return
+     */
+    public void setImageLoader(YAJImageLoader imageLoader) {
+        YAJImageLoaderManager.Companion.initialize(imageLoader);
     }
 }

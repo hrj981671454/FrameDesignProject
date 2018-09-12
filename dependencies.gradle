@@ -28,6 +28,7 @@ ext {
     glideVersion = '4.8.0'
     okhttpVersion = '3.11.0'
     picassoVersion = '2.5.2'
+    picassoDownloadVersion = '1.1.0'
     universalVersion = '1.9.5'
 
     gsyImageLoaderVersion = 'v1.0.1'
@@ -57,5 +58,6 @@ ext {
             okhttp3             : "com.squareup.okhttp3:okhttp:$okhttpVersion",
             picasso             : "com.squareup.picasso:picasso:$picassoVersion",
             universalimageloader: "com.nostra13.universalimageloader:universal-image-loader:$universalVersion",
+            picassoDownload     : "com.jakewharton.picasso:picasso2-okhttp3-downloader:$picassoDownloadVersion",
     ]
 }
