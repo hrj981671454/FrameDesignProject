@@ -1,7 +1,7 @@
 package com.eaju.imageloader.myLoader.cache;
 
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+import android.util.LruCache;
 
 import com.eaju.imageloader.myLoader.request.BitmapRequest;
 
